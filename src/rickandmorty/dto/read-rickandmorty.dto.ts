@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-export interface ReadRickandmorty {
+export class ReadRickandmorty {
   id: string;
   name: string;
   status: string;
