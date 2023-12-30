@@ -23,3 +23,7 @@ export interface Location {
   name: string;
   url: string;
 }
+
+export class RicksAndMortysResponse {
+  goodRicks: ReadRickandmorty[];
+}
