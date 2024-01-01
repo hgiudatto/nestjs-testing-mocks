@@ -27,3 +27,6 @@ export interface Location {
 export class RicksAndMortysResponse {
   goodRicks: ReadRickandmorty[];
 }
+export class RickAndMortyResponse {
+  goodRick: ReadRickandmorty;
+}

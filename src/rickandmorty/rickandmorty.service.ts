@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ReadRickandmorty } from './dto/read-rickandmorty.dto';
@@ -67,5 +69,26 @@ export class RickandmortyService {
     }
 
     return { goodRicks };
+  }
+
+  async fetchOneRickAndMorty(userData) {
+    const { rickMortyId } = userData;
+    let goodRick;
+
+    const getRick = async (rickMorty) => {
+      this.sleepFetchRickMortys(3000);
+
+      return new Promise(async (resolve) => {
+        const response: ReadRickandmorty = await this.retrieveRicks(rickMorty);
+        const successfulRick = response;
+        if (!!response) {
+          resolve(response);
+        }
+      });
+    };
+
+    goodRick = getRick(rickMortyId);
+
+    return goodRick;
   }
 }

@@ -10,7 +10,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RickandmortyService } from './rickandmorty.service';
-import { RicksAndMortysResponse } from './dto/read-rickandmorty.dto';
+import {
+  RickAndMortyResponse,
+  RicksAndMortysResponse,
+} from './dto/read-rickandmorty.dto';
+import { userInfo } from 'os';
 @Controller('rickandmorty')
 export class RickandmortyController {
   constructor(private readonly rickAndMortyService: RickandmortyService) {}
@@ -21,5 +25,11 @@ export class RickandmortyController {
     @Body() userData,
   ): Promise<RicksAndMortysResponse> {
     return await this.rickAndMortyService.fetchEveryRickAndMorty(userData);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('fetch_onerickmorty')
+  async fetchOneRickAndMorty(@Body() userData): Promise<RickAndMortyResponse> {
+    return await this.rickAndMortyService.fetchOneRickAndMorty(userData);
   }
 }
