@@ -1,14 +1,24 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable, BadRequestException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  Logger,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { ReadRickandmorty } from './dto/read-rickandmorty.dto';
-import { AxiosError } from 'axios';
-import { firstValueFrom } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import {
+  ReadRickandmorty,
+  RickAndMortyResponse,
+} from './dto/read-rickandmorty.dto';
+import { AxiosError, AxiosResponse } from 'axios';
+import { Observable, firstValueFrom, forkJoin, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 @Injectable()
 export class RickandmortyService {
   private readonly logger = new Logger(RickandmortyService.name);
+  private readonly RICK_AND_MORTY_API =
+    'https://rickandmortyapi.com/api/character';
   constructor(private readonly httpService: HttpService) {}
 
   sleepFetchRickMortys = (delay: number) =>
@@ -81,8 +91,8 @@ export class RickandmortyService {
       return new Promise(async (resolve) => {
         const response: ReadRickandmorty = await this.retrieveRicks(rickMorty);
         const successfulRick = response;
-        if (!!response) {
-          resolve(response);
+        if (!!successfulRick) {
+          resolve(successfulRick);
         }
       });
     };
@@ -90,5 +100,27 @@ export class RickandmortyService {
     goodRick = getRick(rickMortyId);
 
     return goodRick;
+  }
+
+  async fetchFilteredRickAndMorty(
+    name,
+    status,
+  ): Promise<Observable<AxiosResponse<RickAndMortyResponse[], any>>> {
+    const observable = this.httpService
+      .get<RickAndMortyResponse[]>(
+        `${this.RICK_AND_MORTY_API}/?name=${name}&status=${status}`,
+      )
+      .pipe(
+        map((response) => response),
+        catchError((error: AxiosError) => {
+          console.log('An error ocurred', error);
+          const { response } = error;
+          return throwError(
+            new InternalServerErrorException('error ocurrred...'),
+          );
+        }),
+      );
+
+    return observable;
   }
 }
