@@ -14,6 +14,7 @@ import {
 import { AxiosError, AxiosResponse } from 'axios';
 import { Observable, firstValueFrom, forkJoin, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { response } from 'express';
 @Injectable()
 export class RickandmortyService {
   private readonly logger = new Logger(RickandmortyService.name);
@@ -102,25 +103,24 @@ export class RickandmortyService {
     return goodRick;
   }
 
-  async fetchFilteredRickAndMorty(
-    name,
-    status,
-  ): Promise<Observable<AxiosResponse<RickAndMortyResponse[], any>>> {
-    const observable = this.httpService
-      .get<RickAndMortyResponse[]>(
-        `${this.RICK_AND_MORTY_API}/?name=${name}&status=${status}`,
-      )
-      .pipe(
-        map((response) => response),
-        catchError((error: AxiosError) => {
-          console.log('An error ocurred', error);
-          const { response } = error;
-          return throwError(
-            new InternalServerErrorException('error ocurrred...'),
-          );
-        }),
-      );
+  async fetchFilteredRickAndMorty(name, status): Promise<ReadRickandmorty[]> {
+    const ricksFound: ReadRickandmorty[] = [];
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(`${this.RICK_AND_MORTY_API}/?name=${name}&status=${status}`)
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    let rickFound: ReadRickandmorty = new ReadRickandmorty();
+    data?.results.map((res) => {
+      rickFound = res;
+      ricksFound.push(rickFound);
+    });
 
-    return observable;
+    return ricksFound;
   }
 }

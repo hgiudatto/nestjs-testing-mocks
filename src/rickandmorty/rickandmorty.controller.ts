@@ -6,15 +6,16 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { RickandmortyService } from './rickandmorty.service';
 import {
+  ReadRickandmorty,
   RickAndMortyResponse,
   RicksAndMortysResponse,
 } from './dto/read-rickandmorty.dto';
-import { userInfo } from 'os';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 @Controller('rickandmorty')
@@ -38,9 +39,9 @@ export class RickandmortyController {
   @HttpCode(HttpStatus.OK)
   @Get('fetch_filtered_rickmorty')
   async fetchFilteredRickAndMorty(
-    @Param('name') name: string,
-    @Param('status') status: string,
-  ): Promise<Observable<AxiosResponse<RickAndMortyResponse[], any>>> {
+    @Query('name') name: string,
+    @Query('status') status: string,
+  ): Promise<ReadRickandmorty[]> {
     return await this.rickAndMortyService.fetchFilteredRickAndMorty(
       name,
       status,
