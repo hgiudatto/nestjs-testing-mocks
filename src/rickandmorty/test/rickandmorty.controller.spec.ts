@@ -4,11 +4,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RickandmortyController } from '../rickandmorty.controller';
 import { RickandmortyService } from '../rickandmorty.service';
 import {
+  ReadRickandmorty,
   RickAndMortyResponse,
   RicksAndMortysResponse,
 } from '../dto/read-rickandmorty.dto';
 import { rickandmortyStub } from './stubs/rickandmorty.stub';
 import { onerickandmortyStub } from './stubs/onerickandmorty.stub';
+import { fiteredrickandmortyStub } from './stubs/filteredrickandmorty.stub';
 
 jest.mock('../rickandmorty.service');
 describe('RickandmortyController', () => {
@@ -67,6 +69,30 @@ describe('RickandmortyController', () => {
 
       test('then it should return one Rick and Morty', () => {
         expect(goodRick).toEqual(onerickandmortyStub());
+      });
+    });
+  });
+
+  describe('fetchFilteredRickAndMorty', () => {
+    describe('when fetchFilteredRickAndMorty is called', () => {
+      const name: string = 'rick';
+      const status: string = 'alive';
+      let goodRicks: RicksAndMortysResponse;
+      beforeEach(async () => {
+        goodRicks = await rickandmortyService.fetchFilteredRickAndMorty(
+          name,
+          status,
+        );
+      });
+
+      test('then it should call rickandmortyService', () => {
+        expect(
+          rickandmortyService.fetchFilteredRickAndMorty,
+        ).toHaveBeenCalledWith(name, status);
+      });
+
+      test('then it should return all filtered ricks by name and status', () => {
+        expect(goodRicks).toEqual(fiteredrickandmortyStub());
       });
     });
   });

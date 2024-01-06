@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
@@ -103,8 +104,8 @@ export class RickandmortyService {
     return goodRick;
   }
 
-  async fetchFilteredRickAndMorty(name, status): Promise<ReadRickandmorty[]> {
-    const ricksFound: ReadRickandmorty[] = [];
+  async fetchFilteredRickAndMorty(name, status) {
+    const goodRicks = [];
     const { data } = await firstValueFrom(
       this.httpService
         .get(`${this.RICK_AND_MORTY_API}/?name=${name}&status=${status}`)
@@ -115,12 +116,12 @@ export class RickandmortyService {
           }),
         ),
     );
-    let rickFound: ReadRickandmorty = new ReadRickandmorty();
+    let rickFound;
     data?.results.map((res) => {
       rickFound = res;
-      ricksFound.push(rickFound);
+      goodRicks.push(rickFound);
     });
 
-    return ricksFound;
+    return { goodRicks };
   }
 }

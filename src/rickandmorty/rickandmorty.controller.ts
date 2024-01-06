@@ -12,12 +12,9 @@ import {
 } from '@nestjs/common';
 import { RickandmortyService } from './rickandmorty.service';
 import {
-  ReadRickandmorty,
   RickAndMortyResponse,
   RicksAndMortysResponse,
 } from './dto/read-rickandmorty.dto';
-import { Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
 @Controller('rickandmorty')
 export class RickandmortyController {
   constructor(private readonly rickAndMortyService: RickandmortyService) {}
@@ -41,7 +38,7 @@ export class RickandmortyController {
   async fetchFilteredRickAndMorty(
     @Query('name') name: string,
     @Query('status') status: string,
-  ): Promise<ReadRickandmorty[]> {
+  ): Promise<RicksAndMortysResponse> {
     return await this.rickAndMortyService.fetchFilteredRickAndMorty(
       name,
       status,
