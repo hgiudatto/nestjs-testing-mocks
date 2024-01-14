@@ -1,24 +1,21 @@
 /* eslint-disable prettier/prettier */
-import { Test, TestingModule } from '@nestjs/testing'
-import { RickandmortyService } from '../rickandmorty.service'
-import { HttpService } from '@nestjs/axios'
+import { HttpModule } from "@nestjs/axios";
+import { Test, TestingModule } from '@nestjs/testing';
+import { RickandmortyService } from '../rickandmorty.service';
 
-describe.skip('RickandmortyService', () => {
-  let rickandMortyService: RickandmortyService
-  let httpService: HttpService
-
-  const mockRetrieveRicks = { retrieveRicks: jest.fn() }
+describe('RickandmortyService', () => {
+  let rickandMortyService: RickandmortyService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HttpService, RickandmortyService],
-    }).compile()
+      imports: [HttpModule],
+      providers: [RickandmortyService],
+    }).compile();
 
-    rickandMortyService = module.get<RickandmortyService>(RickandmortyService)
-    httpService = module.get<HttpService>(HttpService)
+    rickandMortyService = module.get<RickandmortyService>(RickandmortyService);
   })
 
   it('should be defined', () => {
-    expect(rickandMortyService).toBeDefined()
+    expect(rickandMortyService).toBeDefined();
   })
 })
