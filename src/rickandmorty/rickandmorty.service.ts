@@ -57,7 +57,7 @@ export class RickandmortyService {
   }
 
   async fetchEveryRickAndMorty(userData) {
-    const { rickMortyIds } = userData
+    const rickMortyIds = userData
     const goodRicks = []
 
     rickMortyIds.some((rickMortyId) => {
