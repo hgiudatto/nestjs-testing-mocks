@@ -60,6 +60,12 @@ export class RickandmortyService {
     const { rickMortyIds } = userData
     const goodRicks = []
 
+    rickMortyIds.some((rickMortyId) => {
+      if (rickMortyId < 1 || rickMortyId > 826) {
+        throw new TypeError('Invalid RickAndMorty ID')
+      }
+    })
+
     const getSearchedRicks = async (rickMorty) => {
       this.sleepFetchRickMortys(3000)
       return new Promise(async (resolve) => {
