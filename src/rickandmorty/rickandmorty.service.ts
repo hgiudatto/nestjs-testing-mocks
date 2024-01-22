@@ -107,23 +107,30 @@ export class RickandmortyService {
     return goodRick
   }
 
-  async fetchFilteredRickAndMorty(name, status) {
-    const goodRicks = []
-    const { data } = await firstValueFrom(
-      this.httpService
-        .get(`${this.RICK_AND_MORTY_API}/?name=${name}&status=${status}`)
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data)
-            throw 'An error happened!'
-          }),
-        ),
-    )
-    let rickFound
-    data?.results.map((res) => {
-      rickFound = res
-      goodRicks.push(rickFound)
-    })
+  async fetchFilteredRickAndMorty(name: string, status: string) {
+    let goodRicks = []
+
+    const getFilteredRicks = async (): Promise<any[]> => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const { data } = await this.httpService.axiosRef({
+            url: `${this.RICK_AND_MORTY_API}/?name=${name}&status=${status}`,
+            method: 'GET',
+          })
+          let rickFound
+          data?.results.map((res) => {
+            rickFound = res
+            goodRicks.push(rickFound)
+          })
+          resolve(goodRicks)
+        } catch (err) {
+          reject()
+          throw new InternalServerErrorException()
+        }
+      })
+    }
+
+    await getFilteredRicks()
 
     return { goodRicks }
   }

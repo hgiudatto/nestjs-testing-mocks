@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -9,12 +10,13 @@ import {
   Query,
   Req,
   UseGuards,
-} from '@nestjs/common';
-import { RickandmortyService } from './rickandmorty.service';
+} from '@nestjs/common'
+import { RickandmortyService } from './rickandmorty.service'
 import {
   RickAndMortyResponse,
   RicksAndMortysResponse,
-} from './dto/read-rickandmorty.dto';
+} from './dto/read-rickandmorty.dto'
+import { ParseRickandmortyIdPipe } from './parse-rickandmorty-id/parse-rickandmorty-id.pipe'
 @Controller('rickandmorty')
 export class RickandmortyController {
   constructor(private readonly rickAndMortyService: RickandmortyService) {}
@@ -24,13 +26,13 @@ export class RickandmortyController {
   async fetchEveryRickAndMorty(
     @Body() userData,
   ): Promise<RicksAndMortysResponse> {
-    return await this.rickAndMortyService.fetchEveryRickAndMorty(userData);
+    return await this.rickAndMortyService.fetchEveryRickAndMorty(userData)
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('fetch_onerickmorty')
   async fetchOneRickAndMorty(@Body() userData): Promise<RickAndMortyResponse> {
-    return await this.rickAndMortyService.fetchOneRickAndMorty(userData);
+    return await this.rickAndMortyService.fetchOneRickAndMorty(userData)
   }
 
   @HttpCode(HttpStatus.OK)
@@ -42,6 +44,6 @@ export class RickandmortyController {
     return await this.rickAndMortyService.fetchFilteredRickAndMorty(
       name,
       status,
-    );
+    )
   }
 }
