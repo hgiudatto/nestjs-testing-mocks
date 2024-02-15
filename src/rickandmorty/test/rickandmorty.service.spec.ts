@@ -36,31 +36,116 @@ describe('RickandmortyService', () => {
       await expect(ram).rejects.toBeInstanceOf(TypeError)
     })
     it('valid rickandmorty ID to return the rickandmorty name', async () => {
-      const goodRicks = ['19']
-
       httpService.axiosRef.mockResolvedValueOnce({
-        data: {
-          id: '19',
-          name: 'Antenna Rick',
-          status: 'unknown',
-          species: 'Human',
-          type: 'Human with antennae',
-          gender: 'Male',
-          origin: {
-            name: 'unknown',
-            url: '',
+        data: [
+          {
+            id: 19,
+            name: 'Antenna Rick',
+            status: 'unknown',
+            species: 'Human',
+            type: 'Human with antennae',
+            gender: 'Male',
+            origin: {
+              name: 'unknown',
+              url: '',
+            },
+            location: {
+              name: 'unknown',
+              url: '',
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
+            episode: ['https://rickandmortyapi.com/api/episode/10'],
+            url: 'https://rickandmortyapi.com/api/character/19',
+            created: '2017-11-04T22:28:13.756Z',
           },
-          location: {
-            name: 'unknown',
-            url: '',
+          {
+            id: 267,
+            name: 'Plumber Rick',
+            status: 'Alive',
+            species: 'Human',
+            type: '',
+            gender: 'Male',
+            origin: {
+              name: 'unknown',
+              url: '',
+            },
+            location: {
+              name: 'Citadel of Ricks',
+              url: 'https://rickandmortyapi.com/api/location/3',
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/267.jpeg',
+            episode: ['https://rickandmortyapi.com/api/episode/28'],
+            url: 'https://rickandmortyapi.com/api/character/267',
+            created: '2017-12-31T13:50:57.337Z',
           },
-          image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
-          episode: ['https://rickandmortyapi.com/api/episode/10'],
-          url: 'https://rickandmortyapi.com/api/character/19',
-          created: '2017-11-04T22:28:13.756Z',
-        },
+          {
+            id: 103,
+            name: 'Doofus Rick',
+            status: 'unknown',
+            species: 'Human',
+            type: '',
+            gender: 'Male',
+            origin: {
+              name: 'Earth (J19ζ7)',
+              url: 'https://rickandmortyapi.com/api/location/31',
+            },
+            location: {
+              name: 'Earth (Replacement Dimension)',
+              url: 'https://rickandmortyapi.com/api/location/20',
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/103.jpeg',
+            episode: [
+              'https://rickandmortyapi.com/api/episode/10',
+              'https://rickandmortyapi.com/api/episode/22',
+            ],
+            url: 'https://rickandmortyapi.com/api/character/103',
+            created: '2017-12-01T12:29:27.984Z',
+          },
+          {
+            id: 825,
+            name: 'Young Jerry',
+            status: 'unknown',
+            species: 'Human',
+            type: '',
+            gender: 'Male',
+            origin: {
+              name: 'Earth (Unknown dimension)',
+              url: 'https://rickandmortyapi.com/api/location/30',
+            },
+            location: {
+              name: 'Earth (Unknown dimension)',
+              url: 'https://rickandmortyapi.com/api/location/30',
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/825.jpeg',
+            episode: ['https://rickandmortyapi.com/api/episode/51'],
+            url: 'https://rickandmortyapi.com/api/character/825',
+            created: '2021-11-02T17:20:14.305Z',
+          },
+          {
+            id: 30,
+            name: 'Baby Poopybutthole',
+            status: 'Alive',
+            species: 'Poopybutthole',
+            type: '',
+            gender: 'Male',
+            origin: {
+              name: 'unknown',
+              url: '',
+            },
+            location: {
+              name: 'unknown',
+              url: '',
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/30.jpeg',
+            episode: ['https://rickandmortyapi.com/api/episode/31'],
+            url: 'https://rickandmortyapi.com/api/character/30',
+            created: '2017-11-05T09:13:16.483Z',
+          },
+        ],
       })
-      const ram = rickandMortyService.fetchEveryRickAndMorty(goodRicks)
+      const ram = rickandMortyService.fetchEveryRickAndMorty({
+        rickMortyIds: ['19', '267', '103', '825', '30'],
+      })
       await expect(ram).not.toBeNull()
     })
 

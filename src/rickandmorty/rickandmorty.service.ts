@@ -57,11 +57,12 @@ export class RickandmortyService {
   }
 
   async fetchEveryRickAndMorty(userData) {
-    const rickMortyIds = userData
+    const { rickMortyIds } = userData
     const goodRicks = []
 
-    rickMortyIds.some((rickMortyId) => {
-      if (rickMortyId < 1 || rickMortyId > 826) {
+    rickMortyIds.some((rmId: any) => {
+      let rm: number = Number(rmId)
+      if (rm < 1 || rm > 826) {
         throw new TypeError('Invalid RickAndMorty ID')
       }
     })
@@ -87,7 +88,7 @@ export class RickandmortyService {
   }
 
   async fetchOneRickAndMorty(userData) {
-    const { rickMortyId } = userData
+    const rickMortyId = userData
     let goodRick
 
     const getRick = async (rickMorty) => {

@@ -16,7 +16,10 @@ import {
   RickAndMortyResponse,
   RicksAndMortysResponse,
 } from './dto/read-rickandmorty.dto'
-import { ParseRickandmortyIdPipe } from './parse-rickandmorty-id/parse-rickandmorty-id.pipe'
+import {
+  ParseRickandmortyIdPipe,
+  ParseRickandmortyIdPipe,
+} from './parse-rickandmorty-id/parse-rickandmorty-id.pipe'
 @Controller('rickandmorty')
 export class RickandmortyController {
   constructor(private readonly rickAndMortyService: RickandmortyService) {}
@@ -31,8 +34,10 @@ export class RickandmortyController {
 
   @HttpCode(HttpStatus.OK)
   @Post('fetch_onerickmorty')
-  async fetchOneRickAndMorty(@Body() userData): Promise<RickAndMortyResponse> {
-    return await this.rickAndMortyService.fetchOneRickAndMorty(userData)
+  async fetchOneRickAndMorty(
+    @Param('id', ParseRickandmortyIdPipe) id: number,
+  ): Promise<RickAndMortyResponse> {
+    return await this.rickAndMortyService.fetchOneRickAndMorty(id)
   }
 
   @HttpCode(HttpStatus.OK)
